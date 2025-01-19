@@ -4,6 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     public float Speed = 5f; // Movement speed
     public int Score = 0;   // Player's score
+    public int health = 5; // Player's health
 
     private Rigidbody rb;
 
@@ -14,6 +15,11 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Trap"))
+        {
+            health--;
+            Debug.Log("Health: " + health);
+        }
         // Check if the colliding object is tagged as "Pickup"
         if (other.CompareTag("Pickup"))
         {
