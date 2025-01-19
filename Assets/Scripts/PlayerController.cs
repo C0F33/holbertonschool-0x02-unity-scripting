@@ -2,13 +2,31 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float Speed = 5f;
-    
+    public float Speed = 5f; // Movement speed
+    public int Score = 0;   // Player's score
+
     private Rigidbody rb;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>(); // Get the Rigidbody component
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        // Check if the colliding object is tagged as "Pickup"
+        if (other.CompareTag("Pickup"))
+        {
+            // Increment the score
+            Score++;
+
+            // Log the new score to the console
+            Debug.Log("Score: " + Score);
+
+            // Disable or destroy the coin object
+            other.gameObject.SetActive(false); // Option 1: Disable
+            // Destroy(other.gameObject);      // Option 2: Destroy
+        }
     }
 
     void FixedUpdate()
@@ -19,14 +37,15 @@ public class PlayerController : MonoBehaviour
 
         // Create a movement vector
         Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
+
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
             // Double the movement speed
             rb.linearVelocity = movement * Speed * 2;
         }
         else
-        { 
-            // Apply movement to the Rigidbody
+        {
+            // Apply normal movement speed to the Rigidbody
             rb.linearVelocity = movement * Speed;
         }
     }
